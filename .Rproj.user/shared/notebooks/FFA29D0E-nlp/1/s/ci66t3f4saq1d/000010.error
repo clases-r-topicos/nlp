@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error in map(indices, ~doc[.x]$vector) %>% map(poner_nombres) %>% bind_rows() : \n  could not find function \"%>%\"\n"}

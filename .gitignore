@@ -1,0 +1,5 @@
+data/
+.Rhistory
+nlp.Rproj
+nlp_files/
+create_embeddings.R

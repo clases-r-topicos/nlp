@@ -1,0 +1,512 @@
+embedding <- predict(model, c("bus", "toilet"), type = "embedding")
+embedding
+model <- word2vec(x = x, dim = 15, iter = 20, min_count = 2)
+embedding <- as.matrix(model)
+options(htmltools.dir.version = TRUE)
+knitr::opts_chunk$set(message = FALSE, warning = F, eval = T)
+options(scipen = "999")
+data <- read_csv("data/data_larazon_publico_v2.csv")
+library(tidyverse)
+data <- read_csv("data/data_larazon_publico_v2.csv")
+x <- data$cuerpo[1:10]
+x
+model <- word2vec(x = x, dim = 15, iter = 20, min_count = 2)
+embedding <- as.matrix(model)
+model <- word2vec(x = x, dim = 100, iter = 20, min_count = 2)
+embedding <- as.matrix(model)
+embedding
+x <- data$cuerpo[1:100]
+model <- word2vec(x = x, dim = 100, iter = 20, min_count = 5)
+x <- data$cuerpo[1:500]
+model <- word2vec(x = x, dim = 100, iter = 20, min_count = 5, threads = 10)
+x <- data$cuerpo[1:1000]
+model <- word2vec(x = x, dim = 100, iter = 20, min_count = 5, threads = 10)
+embedding <- as.matrix(model)
+embedding %>% rownames()
+lookslike <- predict(model, c("hojas"), type = "nearest", top_n = 5)
+lookslike
+x <- data$cuerpo[1:5000]
+model <- word2vec(x = x, dim = 100, iter = 20, min_count = 5, threads = 10)
+embedding <- as.matrix(model)
+lookslike <- predict(model, c("hojas"), type = "nearest", top_n = 5)
+lookslike
+lookslike <- predict(model, c("violencia"), type = "nearest", top_n = 5)
+lookslike
+lookslike <- predict(model, c("democracia"), type = "nearest", top_n = 5)
+lookslike
+embedding %>% rownames()
+x <- data$cuerpo[1:10000]
+model <- word2vec(x = x, dim = 100, iter = 20, min_count = 5, threads = 15)
+embedding <- as.matrix(model)
+lookslike <- predict(model, c("democracia"), type = "nearest", top_n = 5)
+lookslike
+lookslike <- predict(model, c("democracia", "violencia", "presidente", "dictadura"), type = "nearest", top_n = 5)
+lookslike
+x <- data$cuerpo[1:20000]
+model <- word2vec(x = x, dim = 20, iter = 20, min_count = 5, threads = 16)
+embedding <- as.matrix(model)
+lookslike <- predict(model, c("democracia", "violencia", "presidente", "dictadura"), type = "nearest", top_n = 5)
+lookslike
+x <- data$cuerpo[1:50000]
+model <- word2vec(x = x, dim = 100, iter = 20, min_count = 5, threads = 16)
+embedding <- as.matrix(model)
+lookslike <- predict(model, c("democracia", "violencia", "presidente", "dictadura"), type = "nearest", top_n = 5)
+lookslike
+embedding <- as.matrix(model)
+lookslike <- predict(model, c("democracia", "violencia", "presidente", "dictadura"), type = "nearest", top_n = 5)
+lookslike
+new_emb <- predict(model, c("bus", "toilet"), type = "embedding")
+new_emb
+lookslike <- predict(model, c("democracia", "violencia", "presidente", "dictadura", "rojo"), type = "nearest", top_n = 5)
+lookslike
+lookslike <- predict(model, c("democracia", "violencia", "presidente", "dictadura", "rojo", "rey"), type = "nearest", top_n = 5)
+lookslike
+x <- data$cuerpo
+model <- word2vec(x = x, dim = 300, iter = 20, min_count = 5, threads = 16)
+embedding <- as.matrix(model)
+lookslike <- predict(model, c("democracia", "violencia", "presidente", "dictadura", "rojo", "rey"), type = "nearest", top_n = 5)
+lookslike
+write_csv(embedding, "data/news_vector.csv")
+write.word2vec(model, "data/news_vectors_300.bin")
+names(embedding)
+View(embedding)
+readr::write_csv(embedding, "data/news_vector.csv")
+readr::write_csv(as.data.frame(embedding), "data/news_vector.csv")
+options(htmltools.dir.version = TRUE)
+knitr::opts_chunk$set(message = FALSE, warning = F, eval = T)
+options(scipen = "999")
+library(reticulate)
+spacy <-  reticulate::import("spacy")
+nlp =  spacy$load("es_core_news_lg")
+doc = nlp("limón pera manzana sandía melón rojo azul amarillo verde perro gato ratón tigre elefante")
+indices <- 0:(length(doc) - 1)
+vectores <- map(indices,  ~doc[.x]$vector ) %>%
+map(poner_nombres) %>%
+bind_rows()
+library(tidyverse)
+library(reticulate)
+spacy <-  reticulate::import("spacy")
+nlp =  spacy$load("es_core_news_lg")
+doc = nlp("limón pera manzana sandía melón rojo azul amarillo verde perro gato ratón tigre elefante")
+indices <- 0:(length(doc) - 1)
+vectores <- map(indices,  ~doc[.x]$vector ) %>%
+map(poner_nombres) %>%
+bind_rows()
+poner_nombres <- function(vector) {
+names(vector) <- paste0("dim", 1:length(vector))
+return(vector)
+}
+split_text <- function(string) {
+edit1 <- str_split(string, "\\.")[[1]]
+return(edit1)
+}
+split_and_edit <-  function(string) {
+edit1 <- str_split(string, "\\.")[[1]]
+edit2 <- str_remove_all(edit1, '\\"|‘|’|»') %>%
+str_remove_all("[[:punct:]]") %>%
+tm::removeWords( stopwords("es")) %>%
+str_trim(side = "both") %>%
+str_replace_all(pattern = "  ", " " ) %>%
+str_replace_all(pattern = "  ", " " )
+return(edit2)
+}
+editar_texto <-  function(string) {
+edit2 <- str_remove_all(string, '\\"|‘|’|»') %>%
+str_remove_all("[[:punct:]]") %>%
+tm::removeWords( stopwords("es")) %>%
+str_trim(side = "both") %>%
+str_replace_all(pattern = "  ", " " ) %>%
+str_replace_all(pattern = "  ", " " )
+return(edit2)
+}
+editar_texto2 <-  function(string) {
+edit1 <- paste(string, collapse = " ")
+edit2 <- str_remove_all(edit1, '\\"|‘|’|»') %>%
+str_remove_all("[[:punct:]]") %>%
+str_trim(side = "both")
+return(edit2)
+}
+eliminar_vacios <- function(lista) {
+discard(lista,  function(x) x == "")
+}
+encontrar_mas_parecidos <- function(vectores, texto, n = 3 ) {
+vector <-  create_representation(texto)
+vector <- vector[[1]] %>% unname() %>% unlist()
+similitud <-  map_dbl(vectores, ~coop::cosine(vector, .x ) )
+top <- order(similitud, decreasing=T)[1:n]
+return(textos[top])
+}
+create_representation <- function(texto) {
+var_names <- paste0("dim", 1:300)
+doc = nlp(texto)
+indices <- 0:(length(doc) - 1)
+vectores <- map(indices,  ~doc[.x]$vector ) %>%
+discard(function(x) sum(x) == 0 ) %>%
+map(set_names, var_names) %>%
+bind_rows()
+representacion <-  map(vectores, mean)
+return(list(representacion, texto, length(indices)) )
+}
+library(reticulate)
+spacy <-  reticulate::import("spacy")
+nlp =  spacy$load("es_core_news_lg")
+doc = nlp("limón pera manzana sandía melón rojo azul amarillo verde perro gato ratón tigre elefante")
+indices <- 0:(length(doc) - 1)
+vectores <- map(indices,  ~doc[.x]$vector ) %>%
+map(poner_nombres) %>%
+bind_rows()
+resultado <- prcomp(vectores, scale = TRUE)
+df <-  data.frame(dim1 = resultado$x[, 1], dim2 = resultado$x[, 2]) %>%
+mutate(objeto = c("fruta", "fruta", "fruta", "fruta", "fruta", "color", "color", "color", "color", "animal",
+"animal", "animal", "animal", "animal" ),
+word = c("limón", "pera", "manzana", "sandía", "melón", "rojo", "azul", "amarillo", "verde", "perro",
+"gato", "ratón", "tigre", "elefante")
+)
+df %>%
+ggplot(aes(dim1, dim2, color = objeto, label = word)) +
+geom_point() +
+scale_color_manual(values = c("fruta" = "black", "color" = "red", "animal" = "blue"))
+geom_text() +
+theme_bw()
+df %>%
+ggplot(aes(dim1, dim2, color = objeto, label = word)) +
+geom_point() +
+scale_color_manual(values = c("fruta" = "black", "color" = "red", "animal" = "blue")) +
+geom_text() +
+theme_bw()
+pal <- c("red", "blue", "green")
+library(plotly)
+fig <- plot_ly(df_3d, x = ~dim1, y = ~dim2, z = ~dim3, color = ~objeto, text = ~word, colors = pal)
+df_3d <-  data.frame(dim1 = resultado$x[, 1], dim2 = resultado$x[, 2], dim3 = resultado$x[, 3]) %>%
+mutate(objeto = c("fruta", "fruta", "fruta", "fruta", "fruta", "color", "color", "color", "color", "animal",
+"animal", "animal", "animal", "animal" ),
+word = c("limón", "pera", "manzana", "sandía", "melón", "rojo", "azul", "amarillo", "verde", "perro",
+"gato", "ratón", "tigre", "elefante")
+)
+pal <- c("red", "blue", "green")
+library(plotly)
+fig <- plot_ly(df_3d, x = ~dim1, y = ~dim2, z = ~dim3, color = ~objeto, text = ~word, colors = pal)
+fig <- fig %>% add_markers()
+fig <- fig %>% layout(scene = list(xaxis = list(title = 'dim1'),
+yaxis = list(title = 'dim2'),
+zaxis = list(title = 'dim3')))
+fig
+df %>%
+ggplot(aes(dim1, dim2, color = objeto, label = word)) +
+geom_point() +
+scale_color_manual(values = c("fruta" = "green", "color" = "blue", "animal" = "red")) +
+geom_text() +
+theme_bw()
+x <- encontrar_mas_parecidos(vectores, "elecciones congreso nacional", 5)
+representations <- readRDS("data/vector_representation_sample.rds")
+# Eliminar textos sin representación y con menos de 4 palabras
+representations2 <- representations %>%
+keep(~!is_empty(.x[[1]])) %>%
+keep(~.x[3] > 4)
+# Guardamos los vectores
+vectores <- representations2 %>%
+map(1) %>%
+map(~unlist(unname(.x)))
+# Guardamos las oraciones editadas
+textos <- representations2 %>%
+map(2)
+x <- encontrar_mas_parecidos(vectores, "elecciones congreso nacional", 5)
+x
+data.frame(oracioens = unlist(x))
+data.frame(oracioens = unlist(x)) %>%
+kbl()
+library(kableExtra)
+data.frame(oracioens = unlist(x)) %>%
+kbl()
+data.frame(oracioens = unlist(x)) %>%
+kbl() %>%
+kable_styling(font_size = 7)
+x <- encontrar_mas_parecidos(vectores, "elecciones congreso nacional", 5)
+crear_tabla(x)
+poner_nombres <- function(vector) {
+names(vector) <- paste0("dim", 1:length(vector))
+return(vector)
+}
+split_text <- function(string) {
+edit1 <- str_split(string, "\\.")[[1]]
+return(edit1)
+}
+split_and_edit <-  function(string) {
+edit1 <- str_split(string, "\\.")[[1]]
+edit2 <- str_remove_all(edit1, '\\"|‘|’|»') %>%
+str_remove_all("[[:punct:]]") %>%
+tm::removeWords( stopwords("es")) %>%
+str_trim(side = "both") %>%
+str_replace_all(pattern = "  ", " " ) %>%
+str_replace_all(pattern = "  ", " " )
+return(edit2)
+}
+editar_texto <-  function(string) {
+edit2 <- str_remove_all(string, '\\"|‘|’|»') %>%
+str_remove_all("[[:punct:]]") %>%
+tm::removeWords( stopwords("es")) %>%
+str_trim(side = "both") %>%
+str_replace_all(pattern = "  ", " " ) %>%
+str_replace_all(pattern = "  ", " " )
+return(edit2)
+}
+editar_texto2 <-  function(string) {
+edit1 <- paste(string, collapse = " ")
+edit2 <- str_remove_all(edit1, '\\"|‘|’|»') %>%
+str_remove_all("[[:punct:]]") %>%
+str_trim(side = "both")
+return(edit2)
+}
+eliminar_vacios <- function(lista) {
+discard(lista,  function(x) x == "")
+}
+encontrar_mas_parecidos <- function(vectores, texto, n = 3 ) {
+vector <-  create_representation(texto)
+vector <- vector[[1]] %>% unname() %>% unlist()
+similitud <-  map_dbl(vectores, ~coop::cosine(vector, .x ) )
+top <- order(similitud, decreasing=T)[1:n]
+return(textos[top])
+}
+create_representation <- function(texto) {
+var_names <- paste0("dim", 1:300)
+doc = nlp(texto)
+indices <- 0:(length(doc) - 1)
+vectores <- map(indices,  ~doc[.x]$vector ) %>%
+discard(function(x) sum(x) == 0 ) %>%
+map(set_names, var_names) %>%
+bind_rows()
+representacion <-  map(vectores, mean)
+return(list(representacion, texto, length(indices)) )
+}
+crear_tabla <- function(concepto) {
+data.frame(oraciones = unlist(concepto)) %>%
+kbl() %>%
+kable_styling(font_size = 10)
+}
+x <- encontrar_mas_parecidos(vectores, "elecciones congreso nacional", 5)
+crear_tabla(x)
+library(tidyverse)
+data <- read_csv("data/data_larazon_publico_v2.csv")
+options(htmltools.dir.version = TRUE)
+knitr::opts_chunk$set(message = FALSE, warning = F, eval = T)
+options(scipen = "999")
+model <- word2vec::read.word2vec("data/news_vectors_300.bin")
+lookslike <- predict(model, c("democracia", "violencia", "presidente", "dictadura", "rojo", "rey"),
+type = "nearest", top_n = 5)
+lookslike
+lookslike
+lookslike$democracia
+cercanos <- predict(model, c("democracia", "violencia", "presidente", "dictadura", "rey"),
+type = "nearest", top_n = 5)
+cercanos$rey
+cercanos <- predict(model, c("democracia", "violencia", "presidente", "dictadura", "rey", "inmigración"),
+type = "nearest", top_n = 5)
+cercanos
+cercanos <- predict(model, c("inmigración", "democracia", "violencia", "presidente", "dictadura", "rey" ),
+type = "nearest", top_n = 5)
+cercanos
+walk(cercanos,  ~.x %>%  kbl() %>%
+kable_styling(font_size = 12))
+library(kableExtra)
+walk(cercanos,  ~.x %>%  kbl() %>%
+kable_styling(font_size = 12))
+cercanos$democracia %>%
+kbl() %>%
+kable_styling(font_size = 12)
+walk(cercanos,  ~.x %>%  kbl() %>%
+kable_styling(font_size = 12))
+print(
+cercanos$democracia %>%
+kbl() %>%
+kable_styling(font_size = 12)
+)
+walk(cercanos,  ~.x %>%  kbl() %>% kable_styling(font_size = 12) %>% print())
+walk(cercanos,  ~.x %>%  kbl() %>% kable_styling(font_size = 12))
+cercanos %>%
+bind_rows()
+dim(embedding)
+embedding <- as.matrix(model)
+resultado <- prcomp(embedding, scale = TRUE)
+df <-  data.frame(dim1 = resultado$x[, 1], dim2 = resultado$x[, 2])
+embedding %>% rownames()
+embedding_df <- as.data.frame(embedding)
+embedding_df <- as.data.frame(embedding) %>%
+rownames_to_column("word") %>%
+filter(word %in% c("presidente"))
+embedding_df
+embedding_df <- as.data.frame(embedding) %>%
+rownames_to_column("word") %>%
+filter(word %in% c("presidente", "diputado", "senador", "rey", "mercado", "economía", "inflación", "crecimiento"))
+embedding_df$word
+embedding_df <- as.data.frame(embedding) %>%
+rownames_to_column("word") %>%
+filter(word %in% c("presidente", "diputado", "senador", "rey", "mercado", "economía", "inflación", "crecimiento")) %>%
+select(-word)
+resultado <- prcomp(embedding_df, scale = TRUE)
+df <-  data.frame(dim1 = resultado$x[, 1], dim2 = resultado$x[, 2])
+word_list <- c("presidente", "diputado", "senador", "rey", "mercado", "economía", "inflación", "crecimiento")
+embedding_df <- as.data.frame(embedding) %>%
+rownames_to_column("word") %>%
+filter(word %in% word_list) %>%
+select(-word)
+df <-  data.frame(dim1 = resultado$x[, 1], dim2 = resultado$x[, 2], word = word_list)
+df %>%
+ggplot(aes(dim1, dim2, color = objeto, label = word)) +
+geom_point() +
+geom_text() +
+theme_bw()
+df %>%
+ggplot(aes(dim1, dim2, label = word)) +
+geom_point() +
+geom_text() +
+theme_bw()
+word_list <- c("presidente", "diputado", "musulmán", "inmigrante", "inmigración", "economía", "inflación")
+embedding_df <- as.data.frame(embedding) %>%
+rownames_to_column("word") %>%
+filter(word %in% word_list) %>%
+select(-word)
+resultado <- prcomp(embedding_df, scale = TRUE)
+df <-  data.frame(dim1 = resultado$x[, 1], dim2 = resultado$x[, 2], word = word_list)
+df %>%
+ggplot(aes(dim1, dim2, label = word)) +
+geom_point() +
+geom_text() +
+theme_bw()
+word_list <- c("presidente", "diputado", "musulmán", "inmigrante", "migración", "economía", "inflación")
+embedding_df <- as.data.frame(embedding) %>%
+rownames_to_column("word") %>%
+filter(word %in% word_list) %>%
+select(-word)
+resultado <- prcomp(embedding_df, scale = TRUE)
+df <-  data.frame(dim1 = resultado$x[, 1], dim2 = resultado$x[, 2], word = word_list)
+df %>%
+ggplot(aes(dim1, dim2, label = word)) +
+geom_point() +
+geom_text() +
+theme_bw()
+word_list <- c("presidente", "diputado", "musulmán", "inmigrante", "migración", "economía", "inflación")
+embedding_df <- as.data.frame(embedding) %>%
+rownames_to_column("word") %>%
+filter(word %in% word_list) %>%
+select(-word)
+resultado <- prcomp(embedding_df, scale = TRUE)
+df <-  data.frame(dim1 = resultado$x[, 1], dim2 = resultado$x[, 2], word = word_list)
+df %>%
+ggplot(aes(dim1, dim2, label = word)) +
+geom_point() +
+geom_text() +
+theme_bw()
+word_list <- c("presidente", "diputado", "musulmán", "inmigrante", "migración", "economía", "inflación", "manzana")
+embedding_df <- as.data.frame(embedding) %>%
+rownames_to_column("word") %>%
+filter(word %in% word_list) %>%
+select(-word)
+resultado <- prcomp(embedding_df, scale = TRUE)
+df <-  data.frame(dim1 = resultado$x[, 1], dim2 = resultado$x[, 2], word = word_list)
+df %>%
+ggplot(aes(dim1, dim2, label = word)) +
+geom_point() +
+geom_text() +
+theme_bw()
+word_list <- c("presidente", "diputado", "musulmán", "inmigrante", "migración", "economía", "inflación", "deporte")
+embedding_df <- as.data.frame(embedding) %>%
+rownames_to_column("word") %>%
+filter(word %in% word_list) %>%
+select(-word)
+resultado <- prcomp(embedding_df, scale = TRUE)
+df <-  data.frame(dim1 = resultado$x[, 1], dim2 = resultado$x[, 2], word = word_list)
+df %>%
+ggplot(aes(dim1, dim2, label = word)) +
+geom_point() +
+geom_text() +
+theme_bw()
+word_list <- c("presidente", "diputado", "musulmán", "inmigrante", "migración", "economía", "inflación", "deporte",
+"perro", "gato")
+embedding_df <- as.data.frame(embedding) %>%
+rownames_to_column("word") %>%
+filter(word %in% word_list) %>%
+select(-word)
+resultado <- prcomp(embedding_df, scale = TRUE)
+df <-  data.frame(dim1 = resultado$x[, 1], dim2 = resultado$x[, 2], word = word_list)
+df %>%
+ggplot(aes(dim1, dim2, label = word)) +
+geom_point() +
+geom_text() +
+theme_bw()
+reticulate::py_config()
+reticulate::py_install("transformers", pip = TRUE)
+transformers <- reticulate::import("transformers")
+text <- ("Dear Amazon, last week I ordered an Optimus Prime action figure from your online store in Germany. Unfortunately, when I opened the package, I discovered to my horror that I had been sent an action figure of Megatron instead! As a lifelong enemy of the Decepticons, I hope you can understand my dilemma. To resolve the issue, I demand an exchange of Megatron for the Optimus Prime figure I ordered. Enclosed are copies of my records concerning this purchase. I expect to hear from you soon. Sincerely, Bumblebee.")
+transformers <- reticulate::import("transformers")
+classifier <- transformers$pipeline(task = "text-classification")
+reticulate::py_install(c("torch", "sentencepiece"), pip = TRUE)
+text <- ("Dear Amazon, last week I ordered an Optimus Prime action figure from your online store in Germany. Unfortunately, when I opened the package, I discovered to my horror that I had been sent an action figure of Megatron instead! As a lifelong enemy of the Decepticons, I hope you can understand my dilemma. To resolve the issue, I demand an exchange of Megatron for the Optimus Prime figure I ordered. Enclosed are copies of my records concerning this purchase. I expect to hear from you soon. Sincerely, Bumblebee.")
+transformers <- reticulate::import("transformers")
+classifier <- transformers$pipeline(task = "text-classification")
+classifier <- transformers$pipeline(task = "text-classification")
+options(htmltools.dir.version = TRUE)
+knitr::opts_chunk$set(message = FALSE, warning = F, eval = T)
+options(scipen = "999")
+text <- ("Dear Amazon, last week I ordered an Optimus Prime action figure from your online store in Germany. Unfortunately, when I opened the package, I discovered to my horror that I had been sent an action figure of Megatron instead! As a lifelong enemy of the Decepticons, I hope you can understand my dilemma. To resolve the issue, I demand an exchange of Megatron for the Optimus Prime figure I ordered. Enclosed are copies of my records concerning this purchase. I expect to hear from you soon. Sincerely, Bumblebee.")
+transformers <- reticulate::import("transformers")
+classifier <- transformers$pipeline(task = "text-classification")
+text <- ("Dear Amazon, last week I ordered an Optimus Prime action figure from your online store in Germany. Unfortunately, when I opened the package, I discovered to my horror that I had been sent an action figure of Megatron instead! As a lifelong enemy of the Decepticons, I hope you can understand my dilemma. To resolve the issue, I demand an exchange of Megatron for the Optimus Prime figure I ordered. Enclosed are copies of my records concerning this purchase. I expect to hear from you soon. Sincerely, Bumblebee.")
+transformers <- reticulate::import("transformers")
+classifier <- transformers$pipeline(task = "text-classification")
+transformers <- reticulate::import("transformers")
+classifier <- transformers$pipeline(task = "text-classification")
+reticulate::repl_python()
+reticulate::repl_python()
+reticulate::py_config()
+reticulate::repl_python()
+options(htmltools.dir.version = TRUE)
+knitr::opts_chunk$set(message = FALSE, warning = F, eval = T)
+options(scipen = "999")
+library(reticulate)
+py_config()
+reticulate::repl_python()
+pysentimiento <-  reticulate::import("pysentimiento")
+text <- ("Dear Amazon, last week I ordered an Optimus Prime action figure from your online store in Germany. Unfortunately, when I opened the package, I discovered to my horror that I had been sent an action figure of Megatron instead! As a lifelong enemy of the Decepticons, I hope you can understand my dilemma. To resolve the issue, I demand an exchange of Megatron for the Optimus Prime figure I ordered. Enclosed are copies of my records concerning this purchase. I expect to hear from you soon. Sincerely, Bumblebee.")
+transformers <- reticulate::import("transformers")
+classifier <- transformers$pipeline(task = "text-classification")
+outputs <- classifier(text)
+outputs
+text <- c("Me parece una pésima idea. Odio todo lo que me estás diciendo")
+outputs <- classifier(text)
+outputs
+text <- c("Es muy lindo lo que dices. Amo la vida")
+outputs <- classifier(text)
+outputs
+text <- c("Es muy lindo lo que dices. Amo la vida. Hermosas flores llenan de el aire con su fragancia")
+outputs <- classifier(text)
+outputs
+classifier <- transformers$pipeline(task = "text-classification", model = "finiteautomata/beto-sentiment-analysis" )
+text <- c("Es muy lindo lo que dices. Amo la vida. Hermosas flores llenan de el aire con su fragancia")
+outputs <- classifier(text)
+outputs
+text <- c("Es muy lindo lo que dices. Amo la vida")
+outputs <- classifier(text)
+outputs
+classifier <- transformers$pipeline(task = "text-classification", model = "finiteautomata/beto-sentiment-analysis" )
+text <- c("Es muy lindo lo que dices. Amo la vida")
+outputs <- classifier(text)
+outputs
+classifier <- transformers$pipeline(task = "text-classification", model = "pysentimiento/robertuito-sentiment-analysis" )
+text <- c("Es muy lindo lo que dices. Amo la vida")
+outputs <- classifier(text)
+outputs
+options(htmltools.dir.version = TRUE)
+knitr::opts_chunk$set(message = FALSE, warning = F, eval = T)
+options(scipen = "999")
+text <- c("Me parece una pésima idea. Odio todo lo que me estás diciendo")
+transformers <- reticulate::import("transformers")
+classifier <- transformers$pipeline(task = "text-classification", model = "pysentimiento/robertuito-sentiment-analysis" )
+text <- c("Es muy lindo lo que dices. Amo la vida")
+outputs <- classifier(text)
+outputs
+options(htmltools.dir.version = TRUE)
+knitr::opts_chunk$set(message = FALSE, warning = F, eval = T)
+options(scipen = "999")
+library(reticulate)
+reticulate::virtualenv_list()
+reticulate::py_discover_config()
