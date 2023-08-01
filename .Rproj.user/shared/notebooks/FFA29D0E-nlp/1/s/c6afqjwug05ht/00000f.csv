@@ -1,6 +1,0 @@
-"0","transformers <- reticulate::import(""transformers"")"
-"0","classifier <- transformers$pipeline(task = ""text-classification"","
-"0","                                    model = ""pysentimiento/robertuito-sentiment-analysis"" )"
-"2","Xformers is not installed correctly. If you want to use memory_efficient_attention to accelerate training use the following command to install Xformers
-pip install xformers.
-"

@@ -1,6 +1,0 @@
-library(httr)
-library(tictoc)
-
-tic()
-x <- GET("143.198.79.143:7000/data/enusc/2020")
-toc()

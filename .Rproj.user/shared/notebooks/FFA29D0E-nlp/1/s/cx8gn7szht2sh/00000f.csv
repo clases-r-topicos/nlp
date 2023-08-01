@@ -1,6 +1,0 @@
-"0","largo_textos <-  map_int(tokens_data, length)"
-"0","df_largo <- data.frame(largo = largo_textos)"
-"0","df_largo %>% "
-"0","  ggplot(aes(x = largo)) +"
-"0","  geom_histogram(binwidth = 15) +"
-"0","  theme_bw()"

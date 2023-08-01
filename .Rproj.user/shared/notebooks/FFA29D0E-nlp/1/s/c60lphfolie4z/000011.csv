@@ -1,3 +1,0 @@
-"0","comentarios_eta <-  tokens_data %>% "
-"0","  kwic( pattern = ""eta"",  window = 7) # <<"
-"0","DT::datatable(comentarios_eta, options = list(pageLength = 3))"

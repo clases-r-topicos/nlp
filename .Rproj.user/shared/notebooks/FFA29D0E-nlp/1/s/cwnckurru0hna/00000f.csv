@@ -1,8 +1,0 @@
-"0",""
-"0","if (!require(""quanteda"")) install.packages(""quanteda"")"
-"0","if (!require(""tidyverse"")) install.packages(""tidyverse"")"
-"0","if (!require(""quanteda.textstats"")) install.packages(""quanteda.textstats"")"
-"0","if (!require(""kableExtra"")) install.packages(""kableExtra"")"
-"0","if (!require(""word2vec"")) install.packages(""word2vec"")"
-"0","if (!require(""reticulate"")) install.packages(""reticulate"")"
-"0",""

@@ -1,4 +1,0 @@
-"0","violencia_genero <-  corpus[[3]]"
-"0","mostrar_texto <- data.frame(texto = violencia_genero)"
-"0","mostrar_texto %>% "
-"0","  kbl()"

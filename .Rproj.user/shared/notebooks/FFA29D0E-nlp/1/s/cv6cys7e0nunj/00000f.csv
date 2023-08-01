@@ -1,8 +1,0 @@
-"0","set.seed(123)"
-"0","corpus <- data %>% "
-"0","  select(text = cuerpo) %>% "
-"0","  sample_frac(0.2) %>% "
-"0","  corpus()"
-"0",""
-"0","dfm <- corpus %>% "
-"0","  dfm()  "

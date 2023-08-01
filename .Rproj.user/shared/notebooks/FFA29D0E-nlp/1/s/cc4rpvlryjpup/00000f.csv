@@ -1,7 +1,0 @@
-"0","distancia <- textstat_simil(tfidf, method = ""cosine"")"
-"0","dim(distancia)"
-"1","[1]"
-"1"," 11685"
-"1"," 11685"
-"1","
-"
