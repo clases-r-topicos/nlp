@@ -94,10 +94,20 @@ if (!require("quanteda.textstats")) install.packages("quanteda.textstats")
 if (!require("kableExtra")) install.packages("kableExtra")
 if (!require("word2vec")) install.packages("word2vec")
 if (!require("reticulate")) install.packages("reticulate")
+if (!require("tm")) install.packages("tm")
 
 ```
 
-Descarguen y ejecuten el código que está [aquí](https://drive.google.com/drive/folders/1KQjyE2tKht7OWIZOJ1dyXKedtQdHjyxa?usp=sharing)  
+Descarguen los archivos que están acá:
+
+- [opción 1: google drive](https://drive.google.com/drive/folders/1KQjyE2tKht7OWIZOJ1dyXKedtQdHjyxa?usp=sharing)
+- [opción 2: one drive](https://inechile.sharepoint.com/:f:/s/cienciadedatos/EtsXv7EPGoRHmv_hstSVCLUBr_ux4i2URQmoNvQh5raG7g?e=Im1tdd)
+
+
+--
+
+### Ejecuten el código del archivo helpers.R
+
 
 ```{r cargar paquetes, echo=FALSE}
 library(quanteda)
@@ -106,6 +116,7 @@ library(quanteda.textstats)
 library(kableExtra)
 library(word2vec)
 library(reticulate)
+library(tm)
 ```
 
 
@@ -196,7 +207,7 @@ background-position: 100% 0%
 
 Conjunto de noticias obtenidas de los diarios La Razón y Público de España
 
-Pueden descargarlo desde [acá](https://www.kaggle.com/datasets/josemamuiz/noticias-laraznpblico/download?datasetVersionNumber=1)
+El archivo está en los links ya señalados: [acá](https://drive.google.com/drive/folders/1KQjyE2tKht7OWIZOJ1dyXKedtQdHjyxa?usp=sharing) o [acá](https://inechile.sharepoint.com/:f:/s/cienciadedatos/EtsXv7EPGoRHmv_hstSVCLUBr_ux4i2URQmoNvQh5raG7g?e=Im1tdd)
 
 --
 
@@ -462,10 +473,12 @@ Nos interesa observar las menciones relativas a la ETA
 ```{r}
 comentarios_eta <-  tokens_data %>% 
   kwic( pattern = "eta",  window = 7) # <<
-DT::datatable(comentarios_eta, options = list(pageLength = 3))
-
-
 ```
+
+```{r, echo=FALSE}
+DT::datatable(comentarios_eta, options = list(pageLength = 3))
+```
+
 
 ### Retomaremos estos datos al final de la sesión
 
@@ -522,9 +535,11 @@ background-position: 100% 0%
 
 # Recuperando información
 
-Utilizamos similitud coseno para comparar todos los ~vectores~ textos entre sí
+Utilizamos similitud coseno para comparar todos los ~~vectores~~ textos entre sí
 
 La similitud coseno se mueve entre 0 y 1
+
+$cos(\theta) = \frac{A \cdot B}{||A|| ||B||} = \frac{\sum_{i=1}^{n}A_i B_i}{\sqrt{\sum_{i=1}^nA_i^2 \cdot \sum_{i=1}^nB_i^2 }   }$
 
 [Aquí](https://en.wikipedia.org/wiki/Cosine_similarity) encontrarán una definición formal  
 
@@ -684,16 +699,15 @@ background-position: 100% 0%
 
 Vamos a cargar vectores de una librería de python llamada [spacy](https://spacy.io/)  
 
-**Esta parte es un poco más difícil de replicar, pero en las siguientes láminas lo solucionaremos :)**  
+**IMPORTANTE: Esta parte será más difícil de replicar**  
 
-Utilizaremos reticulate
+Tendremos que usar algunas librerías de Python
+
+Utilizaremos reticulate para articular ambos lenguajes
 
 .center[
 <img src="imagenes/reticulate.png" width="400" />
 ]
-
-
-
 
 ]
 
@@ -836,9 +850,13 @@ background-position: 100% 0%
 --
 
 ```{r separar textos, eval=T}
+# Oraciones editadas
 oraciones_editadas <- map(corpus, ~split_and_edit(.x ) )  %>% 
   flatten() 
 
+# Sin editar
+oraciones <- map(corpus, ~split_text(.x)) %>% 
+  flatten()
 
 ```
 
@@ -856,10 +874,11 @@ background-position: 100% 0%
 
 # Usando los vectores de spacy
 
-```{r editar datos, echo=FALSE}
+```{r editar datos, echo=TRUE}
+# Eliminamos las oraciones sin tokens
 texto_vacio <- oraciones_editadas == ""
 oraciones_editadas <- oraciones_editadas[!texto_vacio]
-
+oraciones <- oraciones[!texto_vacio]
 
 ```
 
@@ -867,11 +886,16 @@ oraciones_editadas <- oraciones_editadas[!texto_vacio]
 
 Haremos una muestra de 50.000 oraciones
 
-```{r}
+```{r muestra}
 set.seed(123)
 vector_muestra <-  sample(x = 1:length(oraciones_editadas), 50000, replace = FALSE)
 oraciones_muestra <- oraciones_editadas[vector_muestra]
+oraciones_muestra_originales <- oraciones[vector_muestra]
+
 ```
+
+
+
 
 
 --
@@ -907,6 +931,10 @@ background-position: 100% 0%
 
 
 ```{r cargar representaciones}
+
+# Agregar oraciones originales a la lista
+representations <- map2(oraciones_muestra_originales, representations, ~append(.y, .x))
+
 # Eliminar textos sin representación y con menos de 4 palabras
 representations2 <- representations %>%
   keep(~!is_empty(.x[[1]])) %>% 
@@ -921,6 +949,11 @@ vectores <- representations2 %>%
 textos <- representations2 %>% 
   map(2) 
 
+# Guardamos las oraciones editadas
+textos_originales <- representations2 %>% 
+  map(4) 
+
+
 ```
 
 ---
@@ -932,15 +965,15 @@ background-position: 100% 0%
 # Buscando oraciones
 
 ```{r ejemplo buscar concepto , eval=FALSE}
-encontrar_mas_parecidos(vectores, "elecciones congreso nacional", 5)
-encontrar_mas_parecidos(vectores, "crecimiento económico", 5)
-encontrar_mas_parecidos(vectores, "inmigrantes musulmanes", 5)
-encontrar_mas_parecidos(vectores, "desigualdad económica", 5)
+encontrar_mas_parecidos(vectores, "elecciones congreso nacional", 5, lista_textos =  textos_originales)
+encontrar_mas_parecidos(vectores, "crecimiento económico", 5, lista_textos =  textos_originales)
+encontrar_mas_parecidos(vectores, "inmigrantes musulmanes", 5, lista_textos =  textos_originales)
+encontrar_mas_parecidos(vectores, "desigualdad económica", 5, lista_textos =  textos_originales)
 
-encontrar_mas_parecidos(vectores, "ministerio sanidad")
-encontrar_mas_parecidos(vectores, "inflación", 5)
-encontrar_mas_parecidos(vectores, "terrorismo", 5)
-encontrar_mas_parecidos(vectores, "violencia género", 5)
+encontrar_mas_parecidos(vectores, "ministerio sanidad", lista_textos =  textos_originales)
+encontrar_mas_parecidos(vectores, "inflación", 5, lista_textos =  textos_originales)
+encontrar_mas_parecidos(vectores, "terrorismo", 5, lista_textos =  textos_originales)
+encontrar_mas_parecidos(vectores, "violencia género", 5, lista_textos =  textos_originales)
 
 
 ```
@@ -950,7 +983,7 @@ encontrar_mas_parecidos(vectores, "violencia género", 5)
 
 .panel[.panel-name[elecciones]
 ```{r congreso, echo=FALSE}
-x <- encontrar_mas_parecidos(vectores, "elecciones congreso nacional", 5)
+x <- encontrar_mas_parecidos(vectores, "elecciones congreso nacional", 5, lista_textos =  textos_originales)
 crear_tabla(x)
 ```
 
@@ -959,7 +992,7 @@ crear_tabla(x)
 .panel[.panel-name[crecimiento]
 
 ```{r crecimiento, echo=FALSE}
-x <- encontrar_mas_parecidos(vectores, "crecimiento económico", 5)
+x <- encontrar_mas_parecidos(vectores, "crecimiento económico", 5, lista_textos =  textos_originales)
 crear_tabla(x)
 ```
 
@@ -968,7 +1001,7 @@ crear_tabla(x)
 
 .panel[.panel-name[inmigrantes]
 ```{r inmigrantes, echo=FALSE}
-x <- encontrar_mas_parecidos(vectores, "inmigrantes musulmanes", 5)
+x <- encontrar_mas_parecidos(vectores, "inmigrantes musulmanes", 5, lista_textos =  textos_originales)
 crear_tabla(x)
 ```
 
@@ -976,7 +1009,7 @@ crear_tabla(x)
 
 .panel[.panel-name[desigualdad]
 ```{r desigualdad, echo=FALSE}
-x <- encontrar_mas_parecidos(vectores, "desigualdad económica", 5)
+x <- encontrar_mas_parecidos(vectores, "desigualdad económica", 5, lista_textos =  textos_originales)
 crear_tabla(x)
 ```
 
@@ -984,7 +1017,7 @@ crear_tabla(x)
 
 .panel[.panel-name[sanidad]
 ```{r ministerio, echo=FALSE}
-x <- encontrar_mas_parecidos(vectores, "ministerio sanidad")
+x <- encontrar_mas_parecidos(vectores, "ministerio sanidad",  5, lista_textos =  textos_originales)
 crear_tabla(x)
 ```
 
@@ -992,7 +1025,7 @@ crear_tabla(x)
 
 .panel[.panel-name[inflación]
 ```{r inflacion, echo=FALSE}
-x <- encontrar_mas_parecidos(vectores, "inflación", 5)
+x <- encontrar_mas_parecidos(vectores, "inflación", 5, lista_textos =  textos_originales )
 crear_tabla(x)
 ```
 
@@ -1000,7 +1033,7 @@ crear_tabla(x)
 
 .panel[.panel-name[terrorismo]
 ```{r terrorismo, echo=FALSE}
-x <- encontrar_mas_parecidos(vectores, "terrorismo", 5)
+x <- encontrar_mas_parecidos(vectores, "terrorismo", 5, lista_textos =  textos_originales)
 crear_tabla(x)
 ```
 
@@ -1008,8 +1041,8 @@ crear_tabla(x)
 
 .panel[.panel-name[género]
 ```{r violencia genero, echo=FALSE}
-x <- encontrar_mas_parecidos(vectores, "violencia género", 5)
-crear_tabla(x)
+x <- encontrar_mas_parecidos(vectores, "violencia género", 5, lista_textos =  textos_originales)
+# crear_tabla(x)
 ```
 
 ]

@@ -45,12 +45,12 @@ eliminar_vacios <- function(lista) {
   discard(lista,  function(x) x == "")  
 }
 
-encontrar_mas_parecidos <- function(vectores, texto, n = 3 ) {
+encontrar_mas_parecidos <- function(vectores, texto, n = 3, lista_textos ) {
   vector <-  create_representation(texto)
   vector <- vector[[1]] %>% unname() %>% unlist()
   similitud <-  map_dbl(vectores, ~coop::cosine(vector, .x ) )
   top <- order(similitud, decreasing=T)[1:n]
-  return(textos[top])
+  return(lista_textos[top])
 }
 
 create_representation <- function(texto) {
