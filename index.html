@@ -4,7 +4,7 @@
     <title>NLP</title>
     <meta charset="utf-8" />
     <meta name="author" content="" />
-    <meta name="date" content="2023-08-03" />
+    <meta name="date" content="2023-08-14" />
     <script src="nlp_files/header-attrs-2.23/header-attrs.js"></script>
     <link href="nlp_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
     <script src="nlp_files/panelset-0.2.6/panelset.js"></script>
@@ -85,6 +85,7 @@ background-position: 100% 0%
 
 Mostrar diferentes herramientas para trabajar con datos de texto
 
+**Tendrán la posibilidad de seguir la clase, pero no es necesario**
 
 ---
 
@@ -163,6 +164,33 @@ background-position: 100% 0%
 
 ]
 
+---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Relevancia
+
+### La cantidad de datos de texto crece día a día de manera veloz
+
+--
+
+#### Es imposible analizarlo todo de manera manual
+
+--
+
+#### Necesitamos herramientas automáticas
+
+
+.pull-left[
+
+&lt;img src="imagenes/logo_twitter.jpg" width="300" /&gt;
+
+]
+
+.pull-right[
+&lt;img src="imagenes/logo_wiki.png" width="200" /&gt;
+]
 
 ---
 
@@ -840,7 +868,7 @@ vectores &lt;- map(indices,  ~doc[.x]$vector ) %&gt;%
 .panel[.panel-name[plot2]
 
 <div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-74f4e92edb0fd3e1ee51" style="width:504px;height:504px;"></div>
-<script type="application/json" data-for="htmlwidget-74f4e92edb0fd3e1ee51">{"x":{"visdat":{"7e4e273030f":["function () ","plotlyVisDat"]},"cur_data":"7e4e273030f","attrs":{"7e4e273030f":{"x":{},"y":{},"z":{},"text":{},"color":{},"colors":["red","blue","green"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"dim1"},"yaxis":{"title":"dim2"},"zaxis":{"title":"dim3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[16.623839924184917,16.743041140254462,7.2459121707226952,5.9475684725730575,4.3980943681223197],"y":[-1.8042413516965181,-4.6190123213298433,0.20338156521421491,-3.0323807851832991,-0.84179731103627453],"z":[6.2803646351984739,3.5927819002241486,-17.857508929554246,0.98658382632795472,-0.48741527698234555],"text":["perro","gato","ratón","tigre","elefante"],"type":"scatter3d","mode":"markers","name":"animal","marker":{"color":"rgba(255,0,0,1)","line":{"color":"rgba(255,0,0,1)"}},"textfont":{"color":"rgba(255,0,0,1)"},"error_y":{"color":"rgba(255,0,0,1)"},"error_x":{"color":"rgba(255,0,0,1)"},"line":{"color":"rgba(255,0,0,1)"},"frame":null},{"x":[-8.2558070434900959,-9.6064118855134772,-5.36214213340876,-8.6386930561961925],"y":[-12.072387979028161,-13.661590790952916,-3.5063753648267726,-6.2738565972768008],"z":[-0.51011897365318304,-0.037550553893176838,0.13793601847238635,2.8362545169633928],"text":["rojo","azul","amarillo","verde"],"type":"scatter3d","mode":"markers","name":"color","marker":{"color":"rgba(0,0,255,1)","line":{"color":"rgba(0,0,255,1)"}},"textfont":{"color":"rgba(0,0,255,1)"},"error_y":{"color":"rgba(0,0,255,1)"},"error_x":{"color":"rgba(0,0,255,1)"},"line":{"color":"rgba(0,0,255,1)"},"frame":null},{"x":[-5.3018494614661362,-5.3276174809395744,-2.9421067195844266,-2.9410474864869811,-2.5827808087718211],"y":[9.2166677760188964,9.8968305855859988,8.2682308424121622,9.2642375410887468,8.962294191010562],"z":[3.0186119552862851,-1.3411517144555194,-0.36713044531899708,2.1183033451067144,1.6300396962781354],"text":["limón","pera","manzana","sandía","melón"],"type":"scatter3d","mode":"markers","name":"fruta","marker":{"color":"rgba(0,255,0,1)","line":{"color":"rgba(0,255,0,1)"}},"textfont":{"color":"rgba(0,255,0,1)"},"error_y":{"color":"rgba(0,255,0,1)"},"error_x":{"color":"rgba(0,255,0,1)"},"line":{"color":"rgba(0,255,0,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-74f4e92edb0fd3e1ee51">{"x":{"visdat":{"6471c2bd7c0b9":["function () ","plotlyVisDat"]},"cur_data":"6471c2bd7c0b9","attrs":{"6471c2bd7c0b9":{"x":{},"y":{},"z":{},"text":{},"color":{},"colors":["red","blue","green"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"dim1"},"yaxis":{"title":"dim2"},"zaxis":{"title":"dim3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[16.623839924184917,16.743041140254462,7.2459121707226952,5.9475684725730575,4.3980943681223197],"y":[-1.8042413516965181,-4.6190123213298433,0.20338156521421491,-3.0323807851832991,-0.84179731103627453],"z":[6.2803646351984739,3.5927819002241486,-17.857508929554246,0.98658382632795472,-0.48741527698234555],"text":["perro","gato","ratón","tigre","elefante"],"type":"scatter3d","mode":"markers","name":"animal","marker":{"color":"rgba(255,0,0,1)","line":{"color":"rgba(255,0,0,1)"}},"textfont":{"color":"rgba(255,0,0,1)"},"error_y":{"color":"rgba(255,0,0,1)"},"error_x":{"color":"rgba(255,0,0,1)"},"line":{"color":"rgba(255,0,0,1)"},"frame":null},{"x":[-8.2558070434900959,-9.6064118855134772,-5.36214213340876,-8.6386930561961925],"y":[-12.072387979028161,-13.661590790952916,-3.5063753648267726,-6.2738565972768008],"z":[-0.51011897365318304,-0.037550553893176838,0.13793601847238635,2.8362545169633928],"text":["rojo","azul","amarillo","verde"],"type":"scatter3d","mode":"markers","name":"color","marker":{"color":"rgba(0,0,255,1)","line":{"color":"rgba(0,0,255,1)"}},"textfont":{"color":"rgba(0,0,255,1)"},"error_y":{"color":"rgba(0,0,255,1)"},"error_x":{"color":"rgba(0,0,255,1)"},"line":{"color":"rgba(0,0,255,1)"},"frame":null},{"x":[-5.3018494614661362,-5.3276174809395744,-2.9421067195844266,-2.9410474864869811,-2.5827808087718211],"y":[9.2166677760188964,9.8968305855859988,8.2682308424121622,9.2642375410887468,8.962294191010562],"z":[3.0186119552862851,-1.3411517144555194,-0.36713044531899708,2.1183033451067144,1.6300396962781354],"text":["limón","pera","manzana","sandía","melón"],"type":"scatter3d","mode":"markers","name":"fruta","marker":{"color":"rgba(0,255,0,1)","line":{"color":"rgba(0,255,0,1)"}},"textfont":{"color":"rgba(0,255,0,1)"},"error_y":{"color":"rgba(0,255,0,1)"},"error_x":{"color":"rgba(0,255,0,1)"},"line":{"color":"rgba(0,255,0,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
   ]
 ]
 

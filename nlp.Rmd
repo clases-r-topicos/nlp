@@ -76,6 +76,7 @@ background-position: 100% 0%
 
 Mostrar diferentes herramientas para trabajar con datos de texto
 
+**Tendrán la posibilidad de seguir la clase, pero no es necesario**
 
 ---
 
@@ -163,6 +164,33 @@ background-position: 100% 0%
 
 ]
 
+---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Relevancia
+
+### La cantidad de datos de texto crece día a día de manera veloz
+
+--
+
+#### Es imposible analizarlo todo de manera manual
+
+--
+
+#### Necesitamos herramientas automáticas
+
+
+.pull-left[
+
+<img src="imagenes/logo_twitter.jpg" width="300" />
+
+]
+
+.pull-right[
+<img src="imagenes/logo_wiki.png" width="200" />
+]
 
 ---
 
