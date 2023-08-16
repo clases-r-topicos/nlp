@@ -1074,7 +1074,7 @@ crear_tabla(x)
 .panel[.panel-name[género]
 ```{r violencia genero, echo=FALSE}
 x <- encontrar_mas_parecidos(vectores, "violencia género", 5, lista_textos =  textos_originales)
-# crear_tabla(x)
+crear_tabla(x)
 ```
 
 ]
