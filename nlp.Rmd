@@ -65,10 +65,10 @@ background-position: 100% 0%
 # Contenidos
 
 - Introducción
-- Expresiones regulares
 - Tokenización 
 - TF-IDF
-- Modelos de lenguaje
+- *Word embeddings*
+- Clasificador de sentimientos
 
 --
 
@@ -555,6 +555,10 @@ tfidf <- dfm2 %>%
   dfm_tfidf()
 ```
 
+```{r, echo=FALSE}
+tfidf[1:3, 1:5]
+```
+
 ---
 
 background-image: url("imagenes/fondo2.PNG")
@@ -676,15 +680,11 @@ Cualquier mecanismo que permita convertir palabras en vectores
 
 --
 
-La palabra **nación** está más cerca semánticamente a **país** que la palabra **hipopótamo** 
-
---
-
-Para un humano esto es trivial, pero para un computador es muy difícil
-
---
-
 **Idea clave**: El significado de una palabra está dada por su contexto 
+
+--
+
+La palabra **nación** está más cerca semánticamente a **país** que la palabra **hipopótamo** 
 
 --
 
@@ -693,6 +693,10 @@ La palabra **animal** está asociada a la palabra **hipopótamo**
 --
 
 No es tan común que la palabra **nación** esté cerca de **animal**
+
+--
+
+Para un humano esto es trivial, pero para un computador es muy difícil
 
 --
 
